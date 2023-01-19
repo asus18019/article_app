@@ -1,10 +1,13 @@
 import React, { FC } from 'react';
+import { Container, Typography } from '@mui/material';
 
 const Home: FC = () => {
-	return(
-		<div>
-			Homepage
-		</div>
+	return (
+		<Container disableGutters>
+			<Typography component="div" style={ { backgroundColor: '#cfe8fc' } }>
+				Homepage
+			</Typography>
+		</Container>
 	);
 };
 
