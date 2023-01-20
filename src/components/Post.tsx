@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, CardMedia, CardContent, CardActions, Typography, Stack } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
-import { Post as PostType } from '../data';
+import { Post as PostType } from '../redux/post/types';
 import { convertDate } from '../utils/convertDate';
 
 interface PostProps {

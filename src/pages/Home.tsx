@@ -1,26 +1,40 @@
-import React, { FC, useState } from 'react';
-import { Container, Typography, Divider, Grid } from '@mui/material';
+import React, { FC, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Container, Typography, Divider, Grid, CircularProgress } from '@mui/material';
 
 import Post from '../components/Post';
-import { data, Post as PostType } from '../data';
+import { fetchPosts, selectPosts } from '../redux/post/slice';
+import { Status } from '../redux/post/types';
+import { useAppDispatch } from '../redux/store';
 
 const Home: FC = () => {
-	const [posts, setPosts] = useState<PostType[]>(data);
+	const dispatch = useAppDispatch();
+	const fetchedData = useSelector(selectPosts);
+
+	useEffect(() => {
+		dispatch(fetchPosts());
+	}, []);
+
 	return (
 		<Container disableGutters>
 			<Typography variant="h4" component="h2" style={ { fontSize: 16, fontWeight: 600, fontFamily: 'Montserrat', marginTop: 40 } }>
-				Results: { posts.length }
+				Results: { fetchedData.posts.length }
 			</Typography>
-			<Divider style={{ marginTop: 5 }} />
-			<Grid container spacing={6} style={{ marginTop: 0 }}>
-				{
-					posts.map(post => {
+			<Divider style={ { marginTop: 5 } }/>
+			<Grid container spacing={ 6 } style={ { marginTop: 0 } }>
+				{ fetchedData.status === Status.LOADING ? (
+					<Grid item xs={ 12 } sx={{ display: 'flex', justifyContent: 'center' }}>
+						<CircularProgress />
+					</Grid>
+				) : (
+					fetchedData.posts?.map(post => {
 						return (
-							<Grid item xs={4} key={ post.id }>
+							<Grid item xs={ 4 } key={ post.id }>
 								<Post post={ post }/>
 							</Grid>
 						);
 					})
+				)
 				}
 			</Grid>
 		</Container>

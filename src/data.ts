@@ -1,16 +1,4 @@
-export type Post = {
-	id: number,
-	title: string,
-	url: string,
-	imageUrl: string,
-	newsSite: string,
-	summary: string,
-	publishedAt: string,
-	updatedAt: string,
-	featured: boolean,
-	launches: any[],
-	events: string[]
-};
+import { Post } from './redux/post/types';
 
 export const data: Post[] = [
 	{
