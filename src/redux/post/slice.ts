@@ -18,6 +18,7 @@ export const fetchPosts = createAsyncThunk<Post[]>(
 );
 
 export const selectPosts = (state: RootState) => state.postSlice;
+export const selectPostById = (id: number) => (state: RootState) => state.postSlice.posts.filter(post => post.id === id)[0];
 
 const slice = createSlice({
 	name: 'posts',
@@ -30,7 +31,6 @@ const slice = createSlice({
 		});
 		builder.addCase(fetchPosts.fulfilled, (state, action) => {
 			state.status = Status.SUCCESS;
-			console.log('action payload: ' + action.payload);
 			state.posts = action.payload;
 		});
 		builder.addCase(fetchPosts.rejected, (state) => {
