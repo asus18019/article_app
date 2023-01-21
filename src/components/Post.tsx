@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardMedia, CardContent, CardActions, Typography, Stack } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -7,15 +7,37 @@ import { Post as PostType } from '../redux/post/types';
 import { convertDate } from '../utils/convertDate';
 
 interface PostProps {
-	post: PostType;
+	post: PostType,
+	searchValue: string
 }
 
-const Post: FC<PostProps> = ({ post }) => {
+const Post: FC<PostProps> = ({ post, searchValue }) => {
 	const navigate = useNavigate();
 
 	const handleClickOnCard = () => {
 		navigate(`/article/${ post.id }`);
 	};
+
+	const highlightWords = (searchFullValue: string, text: string) => {
+		return text.split(' ').map((word, index, array) => {
+			for(let i = 0; i < searchFullValue.split(' ').length; i++) {
+				if(searchFullValue.split(' ')[i] === word) {
+					const isNextValueInTitle = searchFullValue.split(' ')[i + 1] === array[index + 1];
+					return (
+						<>
+							<span style={ { backgroundColor: 'yellow' } }>{ word }{ isNextValueInTitle && ' ' }</span>
+							{ !isNextValueInTitle && ' ' }
+						</>
+					);
+				}
+			}
+			return <Fragment key={ index }>{ word } </Fragment>;
+		});
+	};
+
+	const title = highlightWords(searchValue, post.title);
+
+	const description = highlightWords(searchValue, post.summary);
 
 	return (
 		<Card variant="outlined" style={ { width: 370, height: 530, boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.05)' } }>
@@ -26,7 +48,10 @@ const Post: FC<PostProps> = ({ post }) => {
 				       onClick={ handleClickOnCard }>
 					<CalendarTodayIcon style={ { marginRight: 10, width: 17 } }/>
 					<Typography variant="h6"
-					            style={ { fontSize: 14, fontFamily: 'Montserrat' } }>{ convertDate(post.publishedAt) }</Typography>
+					            style={ {
+						            fontSize: 14,
+						            fontFamily: 'Montserrat'
+					            } }>{ convertDate(post.publishedAt) }</Typography>
 				</Stack>
 				<Typography
 					component="h2"
@@ -46,7 +71,7 @@ const Post: FC<PostProps> = ({ post }) => {
 					} }
 					onClick={ handleClickOnCard }
 				>
-					{ post.title }
+					{ title }
 				</Typography>
 				<Typography
 					component="p"
@@ -63,7 +88,7 @@ const Post: FC<PostProps> = ({ post }) => {
 					} }
 					onClick={ handleClickOnCard }
 				>
-					{ post.summary }
+					{ description }
 				</Typography>
 				<CardActions style={ { padding: 0 } }>
 					<Stack direction="row" style={ { marginTop: 18, cursor: 'pointer' } } onClick={ handleClickOnCard }>
