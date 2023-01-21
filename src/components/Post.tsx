@@ -21,7 +21,7 @@ const Post: FC<PostProps> = ({ post, searchValue }) => {
 	const highlightWords = (searchFullValue: string, text: string) => {
 		return text.split(' ').map((word, index, array) => {
 			for(let i = 0; i < searchFullValue.split(' ').length; i++) {
-				if(searchFullValue.split(' ')[i] === word) {
+				if(searchFullValue.split(' ')[i].toLowerCase() === word.toLowerCase()) {
 					const isNextValueInTitle = searchFullValue.split(' ')[i + 1] === array[index + 1];
 					return (
 						<Fragment key={ index }>

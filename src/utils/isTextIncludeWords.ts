@@ -5,7 +5,7 @@
 export const isTextIncludeWords = (text: string, searchedWords: string): boolean => {
 	let res = false;
 	text.split(' ').forEach(word => {
-		if(searchedWords.split(' ').includes(word)) {
+		if(searchedWords.split(' ').map(searchedWord => searchedWord.toLowerCase()).includes(word.toLowerCase())) {
 			res = true;
 		}
 	});

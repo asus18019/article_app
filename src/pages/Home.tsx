@@ -19,8 +19,19 @@ const Home: FC = () => {
 		if(value.trim() === '') {
 			setFilteredPosts([]);
 		} else {
-			const t = fetchedData.posts.filter(post => post && (isTextIncludeWords(post.title, value) || isTextIncludeWords(post.summary, value)));
-			setFilteredPosts(t);
+			let lastTitleIndex = 0;
+			const sortedPosts: PostType[] = [];
+			for(let i = 0; i < fetchedData.posts.length; i++) {
+				if(isTextIncludeWords(fetchedData.posts[i].title, value)) {
+					sortedPosts.splice(lastTitleIndex, 0, fetchedData.posts[i]);
+					lastTitleIndex++;
+					continue;
+				}
+				if(isTextIncludeWords(fetchedData.posts[i].summary, value)) {
+					sortedPosts.push(fetchedData.posts[i]);
+				}
+			}
+			setFilteredPosts(sortedPosts);
 		}
 	};
 
