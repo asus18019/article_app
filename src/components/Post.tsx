@@ -24,10 +24,10 @@ const Post: FC<PostProps> = ({ post, searchValue }) => {
 				if(searchFullValue.split(' ')[i] === word) {
 					const isNextValueInTitle = searchFullValue.split(' ')[i + 1] === array[index + 1];
 					return (
-						<>
+						<Fragment key={ index }>
 							<span style={ { backgroundColor: 'yellow' } }>{ word }{ isNextValueInTitle && ' ' }</span>
 							{ !isNextValueInTitle && ' ' }
-						</>
+						</Fragment>
 					);
 				}
 			}
