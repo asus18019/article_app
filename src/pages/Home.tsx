@@ -1,5 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { Box, Container, Typography, Divider, Grid } from '@mui/material';
 
 import Post from '../components/Post';
@@ -11,14 +12,25 @@ import { isTextIncludeWords } from '../utils/isTextIncludeWords';
 
 const Home: FC = () => {
 	const fetchedData = useSelector(selectPosts);
-	const [searchValue, setSearchValue] = useState<string>('');
+	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchValue, setSearchValue] = useState<string>(searchParams.get('search') || '');
 	const [filteredPosts, setFilteredPosts] = useState<PostType[]>(fetchedData.posts);
+
+	useEffect(() => {
+		if(searchValue && fetchedData.status !== Status.LOADING) {
+			onChangeSearch(searchValue);
+		}
+	}, [fetchedData]);
 
 	const onChangeSearch = (value: string) => {
 		setSearchValue(value);
 		if(value.trim() === '') {
 			setFilteredPosts([]);
+			setSearchParams();
 		} else {
+			let search = { search: value };
+			setSearchParams(search, { replace: true });
+
 			let lastTitleIndex = 0;
 			const sortedPosts: PostType[] = [];
 			for(let i = 0; i < fetchedData.posts.length; i++) {
