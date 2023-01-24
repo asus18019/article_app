@@ -8,7 +8,7 @@ import Header from '../components/Header';
 import { selectPosts } from '../redux/post/slice';
 import { Status, Post as PostType } from '../redux/post/types';
 import Loading from '../components/Loading';
-import { isTextIncludeWords } from '../utils/isTextIncludeWords';
+import { sortPostsByPriority } from '../utils/sortPostsByPriority';
 
 const Home: FC = () => {
 	const fetchedData = useSelector(selectPosts);
@@ -31,18 +31,7 @@ const Home: FC = () => {
 			let search = { search: value };
 			setSearchParams(search, { replace: true });
 
-			let lastTitleIndex = 0;
-			const sortedPosts: PostType[] = [];
-			for(let i = 0; i < fetchedData.posts.length; i++) {
-				if(isTextIncludeWords(fetchedData.posts[i].title, value)) {
-					sortedPosts.splice(lastTitleIndex, 0, fetchedData.posts[i]);
-					lastTitleIndex++;
-					continue;
-				}
-				if(isTextIncludeWords(fetchedData.posts[i].summary, value)) {
-					sortedPosts.push(fetchedData.posts[i]);
-				}
-			}
+			const sortedPosts = sortPostsByPriority(fetchedData.posts, value)
 			setFilteredPosts(sortedPosts);
 		}
 	};

@@ -1,5 +1,5 @@
 /**
-	Function isTextIncludeWords checks if text includes any word from the second parameter
+	Function isTextIncludeWords checks if text from the first parameter includes any word from the second parameter
  */
 
 export const isTextIncludeWords = (text: string, searchedWords: string): boolean => {
