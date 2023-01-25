@@ -20,7 +20,21 @@ export const convertDate = (date: string): string => {
 	const monthNumber: number = formatNumber(date, 5, 7);
 	const day: number = formatNumber(date, 8, 10);
 	const year: number = Number(date.slice(0, 4));
-	return `${ months[monthNumber - 1] } ${ day }${ day === 1 ? 'st' : 'th' }, ${ year }`;
+	return `${ months[monthNumber - 1] } ${ createSuffixForDay(day) }, ${ year }`;
+};
+
+/**
+	Function createSuffixForDay creates an ordinal day from a number
+ */
+const createSuffixForDay = (day: number): string => {
+	if([1, 21, 31].includes(day)) {
+		return `${ day }st`;
+	} else if([2, 22].includes(day)) {
+		return `${ day }st`;
+	} else if([3, 23].includes(day)) {
+		return `${ day }st`;
+	}
+	return `${ day }th`;
 };
 
 /**

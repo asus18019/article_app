@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import debounce from 'lodash.debounce';
 import { useSearchParams } from 'react-router-dom';
-import { Container, Typography, Divider, Grid } from '@mui/material';
+import { Container, Typography, Divider, Grid, styled } from '@mui/material';
 
 import Post from '../components/Post';
 import Header from '../components/Header';
@@ -10,6 +10,11 @@ import { selectPosts } from '../redux/post/slice';
 import { Status, Post as PostType } from '../redux/post/types';
 import Loading from '../components/Loading';
 import { sortPostsByPriority } from '../utils/sortPostsByPriority';
+
+const GridContainer = styled(Grid)({
+	display: 'flex',
+	justifyContent: 'center'
+});
 
 const Home: FC = () => {
 	const fetchedData = useSelector(selectPosts);
@@ -46,7 +51,18 @@ const Home: FC = () => {
 		}, 500),
 		[fetchedData.posts]);
 
+	const CreatePostCards = (posts: PostType[]) => {
+		return posts.map(post => {
+			return (
+				<GridContainer item key={ post.id } sx={ { width: { xs: '100%', md: '50%', lg: '33.33%' } } }>
+					<Post post={ post } searchValue={ searchValue }/>
+				</GridContainer>
+			);
+		});
+	};
+
 	const postCount = isFiltering ? filteredPosts.length : fetchedData.posts.length;
+
 
 	return (
 		<Container disableGutters sx={ { my: { xs: '20px', lg: '50px' } } }>
@@ -54,26 +70,14 @@ const Home: FC = () => {
 			<Typography variant="h3" component="h4" sx={ { my: { xs: 3, lg: 5 }, px: { xs: 1, lg: 0 } } }>
 				Results: { postCount }
 			</Typography>
-			<Divider sx={ { mt: 5 } }/>
-			<Grid container spacing="42px" sx={ { mt: 0 } } flexDirection="row" justifyContent="center">
+			<Divider sx={ { mt: { xs: 2, lg: 5 } } }/>
+			<Grid container spacing="40px" sx={ { mt: 0 } } flexDirection="row">
 				{ fetchedData.status === Status.LOADING ? (
 					<Loading/>
 				) : isFiltering ? (
-					filteredPosts.map(post => {
-						return (
-							<Grid item key={ post.id }>
-								<Post post={ post } searchValue={ searchValue }/>
-							</Grid>
-						);
-					})
+					<>{ CreatePostCards(filteredPosts) }</>
 				) : (
-					fetchedData.posts?.map(post => {
-						return (
-							<Grid item key={ post.id }>
-								<Post post={ post } searchValue={ searchValue }/>
-							</Grid>
-						);
-					})
+					<>{ CreatePostCards(fetchedData.posts) }</>
 				)
 				}
 			</Grid>
