@@ -75,7 +75,11 @@ const Post: FC<PostProps> = ({ post, searchValue }) => {
 				<CardText sx={{ mt: '20px', fontSize: 16, WebkitLineClamp: 4}} onClick={ handleClickOnCard }>
 					{ description }
 				</CardText>
-				<Button sx={{ px: 0, mt: '18px', cursor: 'pointer' }} endIcon={<EastOutlinedIcon sx={{ color: 'black' }}/>}>
+				<Button
+					sx={{ px: 0, mt: '18px', cursor: 'pointer' }}
+					endIcon={ <EastOutlinedIcon sx={{ color: 'black' }}/> }
+					onClick={ handleClickOnCard }
+				>
 					<Typography variant='h3' color='black' fontWeight={ 700 } fontFamily='Montserrat'>Read more</Typography>
 				</Button>
 
