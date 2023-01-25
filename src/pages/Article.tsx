@@ -2,8 +2,9 @@ import React, { FC } from 'react';
 import { Container, Stack, CardMedia, Typography, styled } from '@mui/material';
 import WestOutlinedIcon from '@mui/icons-material/WestOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
-import { selectPostById, selectPosts } from '../redux/post/slice';
 import { useSelector } from 'react-redux';
+import { selectPostById, selectPosts } from '../redux/post/slice';
+
 import { Post, Status } from '../redux/post/types';
 import Loading from '../components/Loading';
 import NotFound from '../components/NotFound';

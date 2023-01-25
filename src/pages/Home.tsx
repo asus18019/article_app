@@ -51,7 +51,7 @@ const Home: FC = () => {
 		}, 500),
 		[fetchedData.posts]);
 
-	const CreatePostCards = (posts: PostType[]) => {
+	const createPostCards = (posts: PostType[]) => {
 		return posts.map(post => {
 			return (
 				<GridContainer item key={ post.id } sx={ { width: { xs: '100%', md: '50%', lg: '33.33%' } } }>
@@ -75,9 +75,9 @@ const Home: FC = () => {
 				{ fetchedData.status === Status.LOADING ? (
 					<Loading/>
 				) : isFiltering ? (
-					<>{ CreatePostCards(filteredPosts) }</>
+					<>{ createPostCards(filteredPosts) }</>
 				) : (
-					<>{ CreatePostCards(fetchedData.posts) }</>
+					<>{ createPostCards(fetchedData.posts) }</>
 				)
 				}
 			</Grid>

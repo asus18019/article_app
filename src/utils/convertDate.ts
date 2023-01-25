@@ -30,9 +30,9 @@ const createSuffixForDay = (day: number): string => {
 	if([1, 21, 31].includes(day)) {
 		return `${ day }st`;
 	} else if([2, 22].includes(day)) {
-		return `${ day }st`;
+		return `${ day }nd`;
 	} else if([3, 23].includes(day)) {
-		return `${ day }st`;
+		return `${ day }rd`;
 	}
 	return `${ day }th`;
 };
