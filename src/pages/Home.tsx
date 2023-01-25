@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { Box, Container, Typography, Divider, Grid } from '@mui/material';
+import { Container, Typography, Divider, Grid } from '@mui/material';
 
 import Post from '../components/Post';
 import Header from '../components/Header';
@@ -31,7 +31,7 @@ const Home: FC = () => {
 			let search = { search: value };
 			setSearchParams(search, { replace: true });
 
-			const sortedPosts = sortPostsByPriority(fetchedData.posts, value)
+			const sortedPosts = sortPostsByPriority(fetchedData.posts, value);
 			setFilteredPosts(sortedPosts);
 		}
 	};
@@ -39,38 +39,35 @@ const Home: FC = () => {
 	const postCount = !searchValue.length ? fetchedData.posts.length : filteredPosts.length;
 
 	return (
-		<Box sx={ { p: 6 } }>
+		<Container disableGutters sx={ { my: { xs: '20px', lg: '50px' } } }>
 			<Header searchValue={ searchValue } onChangeSearch={ onChangeSearch }/>
-			<Container disableGutters>
-				<Typography variant="h4" component="h2"
-				            style={ { fontSize: 16, fontWeight: 600, fontFamily: 'Montserrat', marginTop: 40 } }>
-					Results: { postCount }
-				</Typography>
-				<Divider style={ { marginTop: 5 } }/>
-				<Grid container spacing={ 6 } style={ { marginTop: 0 } }>
-					{ fetchedData.status === Status.LOADING ? (
-						<Loading/>
-					) : searchValue.length ? (
-						filteredPosts.map(post => {
-							return (
-								<Grid item xs={ 4 } key={ post.id }>
-									<Post post={ post } searchValue={ searchValue }/>
-								</Grid>
-							);
-						})
-					) : (
-						fetchedData.posts?.map(post => {
-							return (
-								<Grid item xs={ 4 } key={ post.id }>
-									<Post post={ post } searchValue={ searchValue }/>
-								</Grid>
-							);
-						})
-					)
-					}
-				</Grid>
-			</Container>
-		</Box>
+			<Typography variant="h3" component="h4" sx={ { my: { xs: 3, lg: 5 }, px: { xs: 1, lg: 0 } } }>
+				Results: { postCount }
+			</Typography>
+			<Divider sx={ { mt: 5 } }/>
+			<Grid container spacing="42px" sx={ { mt: 0 } } flexDirection="row" justifyContent="center">
+				{ fetchedData.status === Status.LOADING ? (
+					<Loading/>
+				) : searchValue.length ? (
+					filteredPosts.map(post => {
+						return (
+							<Grid item key={ post.id }>
+								<Post post={ post } searchValue={ searchValue }/>
+							</Grid>
+						);
+					})
+				) : (
+					fetchedData.posts?.map(post => {
+						return (
+							<Grid item key={ post.id }>
+								<Post post={ post } searchValue={ searchValue }/>
+							</Grid>
+						);
+					})
+				)
+				}
+			</Grid>
+		</Container>
 	);
 };
 

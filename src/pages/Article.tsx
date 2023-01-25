@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Container, Stack, CardMedia, Typography } from '@mui/material';
+import { Container, Stack, CardMedia, Typography, styled } from '@mui/material';
 import WestOutlinedIcon from '@mui/icons-material/WestOutlined';
 import { useNavigate, useParams } from 'react-router-dom';
 import { selectPostById, selectPosts } from '../redux/post/slice';
@@ -7,6 +7,13 @@ import { useSelector } from 'react-redux';
 import { Post, Status } from '../redux/post/types';
 import Loading from '../components/Loading';
 import NotFound from '../components/NotFound';
+
+const TextContainer = styled(Container)({
+	backgroundColor: '#fff',
+	border: '1px solid #EAEAEA',
+	boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.05)',
+	borderRadius: 5
+});
 
 const Article: FC = () => {
 	const navigate = useNavigate();
@@ -24,7 +31,7 @@ const Article: FC = () => {
 				{ status === Status.SUCCESS && article ? (
 					<>
 						<CardMedia
-							style={ {
+							sx={ {
 								height: 235,
 								position: 'absolute',
 								top: 0,
@@ -34,40 +41,23 @@ const Article: FC = () => {
 							} }
 							component="img" image={ article.imageUrl }
 						/>
-						<Container style={ {
-							backgroundColor: '#fff',
-							padding: '35px 75px 50px 75px',
-							border: '1px solid #EAEAEA',
-							boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.05)',
-							borderRadius: 5
-						} }
-						>
-							<Typography component="h1" style={ {
-								textAlign: 'center',
-								fontFamily: 'Montserrat',
-								fontWeight: 400,
-								fontSize: 24,
-								color: '#363636'
-							} }>{ article.title }</Typography>
-							<Typography component="p" style={ {
-								marginTop: 50,
-								fontFamily: 'Montserrat',
-								fontWeight: 400,
-								fontSize: 18,
-								color: '#363636'
-							} }>{ article.summary }
+						<TextContainer style={ { padding: '35px 75px 50px 75px' } }>
+							<Typography variant="body1" component="h1" fontSize={ 24 } color="363636" textAlign="center">
+								{ article.title }
 							</Typography>
-						</Container>
+							<Typography variant="body1" component="p" fontSize={ 18 } color="#363636" sx={ { mt: '50px' } }>
+								{ article.summary }
+							</Typography>
+						</TextContainer>
 						<Container style={ { padding: '0 75px', margin: '35px auto 45px auto' } }>
-							<Stack style={ { cursor: 'pointer', display: 'inline-flex' } } direction="row"
-							       onClick={ handleClickOnBackBtn }>
+							<Stack
+								sx={ { cursor: 'pointer' } }
+								direction="row"
+								display='inline-flex'
+								onClick={ handleClickOnBackBtn }
+							>
 								<WestOutlinedIcon/>
-								<Typography component="p" style={ {
-									marginLeft: 6,
-									fontFamily: 'Montserrat',
-									fontSize: 16,
-									fontWeight: 700
-								} }>
+								<Typography component="p" fontSize={ 16 } fontWeight={ 700 } sx={ { ml: '6px' } }>
 									Back to homepage
 								</Typography>
 							</Stack>

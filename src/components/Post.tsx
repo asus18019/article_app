@@ -1,6 +1,14 @@
 import React, { FC, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Card, CardMedia, CardContent, CardActions, Typography, Stack } from '@mui/material';
+import {
+	Card,
+	CardMedia,
+	CardContent,
+	Typography,
+	Stack,
+	styled,
+	Button
+} from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import EastOutlinedIcon from '@mui/icons-material/EastOutlined';
 import { Post as PostType } from '../redux/post/types';
@@ -10,6 +18,19 @@ interface PostProps {
 	post: PostType,
 	searchValue: string
 }
+
+const CardText = styled(Typography)({
+	fontSize: 24,
+	fontWeight: 400,
+	lineHeight: 1.3,
+	cursor: 'pointer',
+	lineClamp: 2,
+	display: '-webkit-box',
+	WebkitLineClamp: 2,
+	WebkitBoxOrient: 'vertical',
+	overflow: 'hidden',
+	textOverflow: 'ellipsis'
+});
 
 const Post: FC<PostProps> = ({ post, searchValue }) => {
 	const navigate = useNavigate();
@@ -40,69 +61,24 @@ const Post: FC<PostProps> = ({ post, searchValue }) => {
 	const description = highlightWords(searchValue, post.summary);
 
 	return (
-		<Card variant="outlined" style={ { width: 370, height: 530, boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.05)' } }>
-			<CardMedia style={ { height: 215, cursor: 'pointer' } } image={ post.imageUrl }
-			           onClick={ handleClickOnCard }/>
-			<CardContent style={ { padding: 25 } }>
-				<Stack direction="row" style={ { color: '#363636', opacity: 0.6, cursor: 'pointer' } }
-				       onClick={ handleClickOnCard }>
-					<CalendarTodayIcon style={ { marginRight: 10, width: 17 } }/>
-					<Typography variant="h6"
-					            style={ {
-						            fontSize: 14,
-						            fontFamily: 'Montserrat'
-					            } }>{ convertDate(post.publishedAt) }</Typography>
+		<Card variant="outlined" sx={ { width: 370, height: 520, boxShadow: '0px 8px 24px rgba(0, 0, 0, 0.05)' } }>
+			<CardMedia sx={ { height: 215, cursor: 'pointer' } } image={ post.imageUrl } onClick={ handleClickOnCard }/>
+			<CardContent sx={ { p: '25px' } }>
+				<Stack direction="row" sx={ { color: '#363636', opacity: 0.6, cursor: 'pointer' } }
+				       onClick={ handleClickOnCard } alignItems='center'>
+					<CalendarTodayIcon sx={ { mr: 1, width: 17 } }/>
+					<Typography variant="body1">{ convertDate(post.publishedAt) }</Typography>
 				</Stack>
-				<Typography
-					component="h2"
-					style={ {
-						marginTop: 20,
-						fontFamily: 'Montserrat',
-						fontSize: 24,
-						fontWeight: 400,
-						lineHeight: 1.3,
-						cursor: 'pointer',
-						lineClamp: 2,
-						display: '-webkit-box',
-						WebkitLineClamp: 2,
-						WebkitBoxOrient: 'vertical',
-						overflow: 'hidden',
-						textOverflow: 'ellipsis'
-					} }
-					onClick={ handleClickOnCard }
-				>
+				<CardText sx={{ mt: '25px' }} onClick={ handleClickOnCard }>
 					{ title }
-				</Typography>
-				<Typography
-					component="p"
-					style={ {
-						marginTop: 20,
-						fontFamily: 'Montserrat',
-						fontSize: 16,
-						cursor: 'pointer',
-						display: '-webkit-box',
-						WebkitLineClamp: 4,
-						WebkitBoxOrient: 'vertical',
-						overflow: 'hidden',
-						textOverflow: 'ellipsis'
-					} }
-					onClick={ handleClickOnCard }
-				>
+				</CardText>
+				<CardText sx={{ mt: '20px', fontSize: 16, WebkitLineClamp: 4}} onClick={ handleClickOnCard }>
 					{ description }
-				</Typography>
-				<CardActions style={ { padding: 0 } }>
-					<Stack direction="row" style={ { marginTop: 18, cursor: 'pointer' } } onClick={ handleClickOnCard }>
-						<Typography component="p" style={ {
-							marginRight: 6,
-							fontFamily: 'Montserrat',
-							fontSize: 16,
-							fontWeight: 700
-						} }>
-							Read more
-						</Typography>
-						<EastOutlinedIcon/>
-					</Stack>
-				</CardActions>
+				</CardText>
+				<Button sx={{ px: 0, mt: '18px', cursor: 'pointer' }} endIcon={<EastOutlinedIcon sx={{ color: 'black' }}/>}>
+					<Typography variant='h3' color='black' fontWeight={ 700 } fontFamily='Montserrat'>Read more</Typography>
+				</Button>
+
 			</CardContent>
 		</Card>
 	);

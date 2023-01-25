@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 const NotFound: FC = () => {
 	const navigate = useNavigate();
@@ -7,7 +8,9 @@ const NotFound: FC = () => {
 	const handleClickOnBackBtn = () => navigate('/');
 
 	return (
-		<p onClick={ handleClickOnBackBtn } style={ { cursor: 'pointer', display: 'inline-flex' } }>Page not found. Click to back homepage</p>
+		<Typography onClick={ handleClickOnBackBtn } sx={ { cursor: 'pointer', display: 'inline-flex' } }>
+			Page not found. Click to back homepage
+		</Typography>
 	);
 };
 
