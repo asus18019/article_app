@@ -1,5 +1,6 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import debounce from 'lodash.debounce';
 import { useSearchParams } from 'react-router-dom';
 import { Container, Typography, Divider, Grid } from '@mui/material';
 
@@ -15,6 +16,7 @@ const Home: FC = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchValue, setSearchValue] = useState<string>(searchParams.get('search') || '');
 	const [filteredPosts, setFilteredPosts] = useState<PostType[]>(fetchedData.posts);
+	const [isFiltering, setIsFiltering] = useState<boolean>(Boolean(searchValue));
 
 	useEffect(() => {
 		if(searchValue && fetchedData.status !== Status.LOADING) {
@@ -24,19 +26,27 @@ const Home: FC = () => {
 
 	const onChangeSearch = (value: string) => {
 		setSearchValue(value);
-		if(value.trim() === '') {
-			setFilteredPosts([]);
-			setSearchParams();
-		} else {
-			let search = { search: value };
-			setSearchParams(search, { replace: true });
-
-			const sortedPosts = sortPostsByPriority(fetchedData.posts, value);
-			setFilteredPosts(sortedPosts);
-		}
+		updatePosts(value);
 	};
 
-	const postCount = !searchValue.length ? fetchedData.posts.length : filteredPosts.length;
+	const updatePosts = useCallback(
+		debounce((value: string) => {
+			if(value.trim() === '') {
+				setFilteredPosts([]);
+				setSearchParams();
+				setIsFiltering(false);
+			} else {
+				setIsFiltering(true);
+				let search = { search: value };
+				setSearchParams(search, { replace: true });
+
+				const sortedPosts = sortPostsByPriority(fetchedData.posts, value);
+				setFilteredPosts(sortedPosts);
+			}
+		}, 500),
+		[fetchedData.posts]);
+
+	const postCount = isFiltering ? filteredPosts.length : fetchedData.posts.length;
 
 	return (
 		<Container disableGutters sx={ { my: { xs: '20px', lg: '50px' } } }>
@@ -48,7 +58,7 @@ const Home: FC = () => {
 			<Grid container spacing="42px" sx={ { mt: 0 } } flexDirection="row" justifyContent="center">
 				{ fetchedData.status === Status.LOADING ? (
 					<Loading/>
-				) : searchValue.length ? (
+				) : isFiltering ? (
 					filteredPosts.map(post => {
 						return (
 							<Grid item key={ post.id }>
