@@ -41,7 +41,7 @@ const Article: FC = () => {
 							} }
 							component="img" image={ article.imageUrl }
 						/>
-						<TextContainer style={ { padding: '35px 75px 50px 75px' } }>
+						<TextContainer sx={{ p: { xs: '10px 20px', md: '35px 75px' }} }>
 							<Typography variant="body1" component="h1" fontSize={ 24 } color="363636" textAlign="center">
 								{ article.title }
 							</Typography>
